@@ -1,5 +1,5 @@
-import Lime         from Lemon
-import YellowLemon  from  Lemon
+import Lemon
+
 
 class Recipe:
     def __init__(self):
@@ -8,7 +8,7 @@ class Recipe:
         QtySugar  = 2
 
 class SourRecipe(Recipe):
-        lemon = Lime()
+        lemon = Lemon.Lemon()
 
 class SweetRecipe(Recipe):
-        lemon = YellowLemon()
+        lemon = Lemon.Lemon()

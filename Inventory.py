@@ -83,14 +83,14 @@ class Inventory:
                                     # subtract from inventory
         # Check that there are enough lemons
         # ex. if recipe.lemons > len(self.lemons))  Then error. not enough lemons.
-        if self.pitcher.capacity != 0:
+        if self.pitcher.level != 0:
             # error handling
             i = 0
         else:
             self.takeLemons(recipe.QtyLemons)
             self.takeSugar(recipe.QtySugar)
             self.takeWater(recipe.QtyWater)
-            self.pitcher.level = self.pitcher.capacity
+            self.pitcher.level = self.pitcher.capacity  # set the pitcher to full capacity
 
     def takeLemons(self, quantity):  # take lemons out of inventory to make lemonade
         numLemonsLeft = len (self.lemons)
@@ -136,3 +136,5 @@ class Inventory:
             numSugarsLeft = len(self.sugar)
         return gotSugars  # contains "0 >= gotSugars <= quantity"
 
+    def takeWater(self, quantity):
+        return quantity

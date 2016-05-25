@@ -7,12 +7,12 @@ class Sales:
                                                         #each row is one cup of lemonade sold
 
     def storeSale(self, sale):
-        i=0
         self.SalesTable.append(sale)
+        self.numberOfSales += 1
 
     def tallySales(self):
         currentProfit=0
         for sale in self.SalesTable:
-            currentProfit+= sale[2]                 # Third(0,1,2) element  is the sale price of the cup sold
+            currentProfit += sale[2]                 # Element 2  is the sale price of the cup sold
 
 
