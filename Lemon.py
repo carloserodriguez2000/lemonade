@@ -8,7 +8,8 @@ class Lemon:
         self.size = 0
         self.type = 0
         self.calories = 5
-        self.stored = True                          # stored lemons are available. Otherwise it expired or was used
+        self.stored = True                      # stored lemons are available. Otherwise it expired or was used
+        self.prize = 1.0                        # dollars
 
     def isExpired(self):
         if self.purchaseDate - date.today() > 2:

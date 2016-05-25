@@ -12,7 +12,7 @@ class Sales:
 
     def tallySales(self):
         currentProfit=0
-        for sale in self.SalesTable
+        for sale in self.SalesTable:
             currentProfit+= sale[2]                 # Third(0,1,2) element  is the sale price of the cup sold
 
 

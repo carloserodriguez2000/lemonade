@@ -3,5 +3,6 @@
 class Sugar:
 
     def __init__(self):
-        sugarLevel = 0
+        self.sugarLevel = 0
+        self.prize = 1.0  # dollars
 

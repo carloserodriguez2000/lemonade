@@ -3,9 +3,9 @@ import YellowLemon  from  Lemon
 
 class Recipe:
     def __init__(self):
-        QtyLemons = 0
-        QtyWater  = 0
-        QtySugar  = 0
+        QtyLemons = 4
+        QtyWater  = 1
+        QtySugar  = 2
 
 class SourRecipe(Recipe):
         lemon = Lime()
