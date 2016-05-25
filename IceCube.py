@@ -13,4 +13,10 @@ class IceCube:
             lifeSpan = 9
 
 
+def isExpired(self):
+    if self.purchaseDate - date.today() > 2:
+        # ice  is melted
+        return False
+    else:
+        return True
 

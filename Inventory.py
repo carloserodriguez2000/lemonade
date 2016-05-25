@@ -1,3 +1,4 @@
+import random
 import Cup
 import Lemon
 import IceCube
@@ -8,8 +9,8 @@ class Inventory:
 
     def __init__(self):
         self.lemons   = []             #???? create instance of lemon class. Get quantity from game setup.
-        self.iceCubes = []           # instance of icecube
-        self.cups     = [] # instance of Class Cups.
+        self.iceCubes = []              # instance of icecube
+        self.cups     = []              # instance of Class Cups.
         self.sugar    = []
         self.pitcher  = Pitcher.Pitcher()     # create instance of a pitcher
         self.cash     =0              # Cash on hand to use for purchasing supplies
@@ -58,34 +59,35 @@ class Inventory:
             self.pitcher.level = self.pitcher.capacity      # Fill the pitcher
 
     def TakeLemons(self, quantity):  # take lemons out of inventory to make lemonade
-        i=0
-            # if lemon expired. Delete it.
-            # if no lemons left UPPS
-            # if not enough Lemons left UPPS
-        # subtract cash from each transaction
+        numLemonsLeft = len (self.lemons)
+        gotLemons     = 0                                       # Flag to indicate we got the "quantity" asked.
+        while numLemonsLeft >0 and gotLemons < quantity :
+            randomLemon = random.randrange(0,numLemonsLeft)     # also random.choice(lemons), or random.choice(list(range(10)))
+            thisLemon = self.lemons[randomLemon]
+            if thisLemon.isExpired == False
+                gotLemons +=1
+            self.lemons.pop(randomLemon)                    # remove lemon from inventory. found a good one or removed a bad one.
+            numLemonsLeft = len(self.lemons)
+        return gotLemons                                    # contains "0 >= gotLemons <= quantity"
 
-        if len(self.lemons) < 1 :               # add logic to handle minimun number of lemons.
-            # HANDLE ERROR CONDITION
-            # append a bunch using a loop OR
-            self.lemons.append(Lemon.Lemon())  # add a cup to the list of cups
-
-        useLemon = Lemon.Lemon()
-        for useLemon in self.lemons:
-            if useLemon.isExpired()
-
-        self.lemons.remove(self,quantity)
 
     def TakeIce(self, quantity):
-        i=0
-        # if ice expired. Delete it.
-        # if no ice left UPPS
-        # if not ice  left UPPS
-        # if ice Melting, do some fancy thing
-
+        numIceCubesLeft = len (self.iceCubes)
+        gotIcecubes     = 0                                         # Flag to indicate we got the "quantity" asked.
+        while numIceCubesLeft >0 and gotIcecubes < quantity :
+            randomIceCube = random.randrange(0,numIceCubesLeft)     # also random.choice(lemons), or random.choice(list(range(10)))
+            thisIceCube = self.iceCubes[randomIceCube]
+            if thisIceCube.isExpired == False
+                gotIcecubes +=1
+                self.iceCubes.pop(randomIceCube)                    # remove lemon from inventory. found a good one or removed a bad one.
+            numIceCubesLeft = len(self.iceCubes)
+        return gotLemons                                            # contains "0 >= gotLemons <= quantity"
 
     def TakeCup(self, quantity):
-        i = 0
-        # if cup expired. Delete it.
-        # if no cup left UPPS
-        # if not cup  left UPPS
-        #
+        numCupsLeft = len(self.iceCubes)
+        gotCups = 0  # Flag to indicate we got the "quantity" asked.
+        while numCupsLeft > 0 and gotCups < quantity:
+            gotCups += 1
+            self.cups.pop()  # remove cup from inventory.
+            numCupsLeft = len(self.cups)
+        return gotCups  # contains "0 >= gotLemons <= quantity"
