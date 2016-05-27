@@ -1,21 +1,25 @@
 import Inventory
+import Sales
+
 
 class Owner:
 
     def __init__(self):
-        self.accountValue=0     ## this could be in the inventory:Class-Attribute
+        # self.accountValue=0     ## this could be in the inventory:Class-Attribute
         self.name = ''
         self.age = 0
         self.inventory = Inventory.Inventory()
+        self.daySales = Sales.Sales()
 
     def addFunds(self, pMoney):
-        self.accountValue += pMoney
+        self.inventory.addCash(pMoney)
 
     def withdrawFunds(self,pMoney):
-        self.accountValue -= pMoney
-        if self.accountValue <0 :
-            self.accountValue = 0
-        return self.accountValue
+        self.inventory.takeCash(pMoney)
+        cashOnHand = self.inventory.checkBalance()
+        if cashOnHand <0 :
+            print('ERROR. negative Balance')
+        return cashOnHand
 
     def inputOwnerInfo(self):
         name = input('Please enter your name : ')
@@ -33,9 +37,14 @@ class Owner:
         return balance
 
     def printInventory(self):
-        print('             Lemons = %i' % (len(self.inventory.lemons)))
-        print('             Cups   = %i' % (len(self.inventory.cups)))
-        print('             Sugar  = %i' % (len(self.inventory.sugar)))
+        print('             Cash       = %f' % (self.inventory.cash))
+        print('             Lemons     = %i' % (len(self.inventory.lemons)))
+        print('             Cups       = %i' % (len(self.inventory.cups)))
+        print('             Sugar      = %i' % (len(self.inventory.sugar)))
+        print('             Ice Cubes  = %i' % (len(self.inventory.iceCubes)))
+
+    def enoughInventory(self):
+        return self.inventory.enoughInventory()
 
     def loadOwner(self):                  # The inventory from the last day must be retrievable
         self.inputOwnerInfo()
@@ -47,10 +56,26 @@ class Owner:
         elif  balance == 0 :
             print('Your are BROKE! ')
             print('Let me give you more money: ')
-            self.addFunds(20)  # if the owner has zero Balance
+            funds = 20
+            self.addFunds(funds)  # if the owner has zero Balance
+            self.inventory.addCash(funds)
         else:
             print('Welcome back %s :' %(self.name))
             print('Your account Balance is $%s' %(self.accountValue))
             print('You have the following inventory:')
             self.printInventory()
             return
+
+    def fillCup(self, aCup, aPitcher):
+        aPitcher.serveCup(1)     # serve one cup.
+        aCup.full = True
+
+    def giveFullCup(self,aCup):
+        if aCup.full == True:
+            del aCup                    # destroy memory object.
+        else :
+            print('        ERROR... giving empty cup')
+
+
+
+

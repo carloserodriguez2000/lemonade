@@ -1,6 +1,8 @@
 class Cup:
     def __init__(self):
-        size = 5                # number of ounces is one cup
+        self.size = 5                # number of ounces is one cup
+        self.price = 1
+        self.full = False
 
-    def fillCup(self, pInventory):
-        pInventory.pitcher.srveCup()
+    # def fillCup(self, pInventory):
+    #     pInventory.pitcher.serveCup()

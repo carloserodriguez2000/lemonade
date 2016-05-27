@@ -1,14 +1,15 @@
 import datetime
 import WeatherReport
 import Owner
+import Customer
 
 
 class GameDay:
-
     def __init__(self):
         self.todayWeatherReport = WeatherReport.WeatherReport()
-        self.dayStart = datetime.time(8, 0, 0)   # 8 am
-        self.dayEnd   = datetime.time(17, 0, 0)  # 5 pm
+        self.dayStart = datetime.datetime.now()
+        self.dayEnd = self.dayStart.replace(hour=23)  # datetime.time(17, 0, 0)  # 5 pm
+        self.warpFactor = 60  # increment in 60 seconds blocks
 
     def getMoreInventory(self, theOwner):
         # Print make wise choices based on the weather at the time of day.
@@ -19,9 +20,15 @@ class GameDay:
         theOwner.printInventory()
         more = input('Would you like to get more? y/n: ')
         if more == 'y':
-            moreCups  = input('How many more cups would you like?: ')
-            moreIce   = input('How much ice would you like?: ')           # Add logic to handle 100, 200,500 cub options
-            moreSugar = input('How much more sugar would you like?: ')
+            moreCups = int(input('How many more cups would you like?: '))
+            moreIce = int(input('How much ice would you like?: '))  # Add logic to handle 100, 200,500 cub options
+            moreSugar = int(input('How much more sugar would you like?: '))
+            moreLemons = int(input('How many more lemons would you like?: '))
+            theOwner.inventory.addCups(moreCups, theOwner.inventory.cupPrice)
+            theOwner.inventory.addIcubes(moreIce, theOwner.inventory.icePrice)
+            theOwner.inventory.addSugar(moreSugar, theOwner.inventory.sugarPrice)
+            theOwner.inventory.addLemons(moreLemons, theOwner.inventory.lemonPrice)
+
         print('Inventory has been updated.')
         print('You have the following')
         theOwner.printInventory()
@@ -29,25 +36,32 @@ class GameDay:
     def playDay(self):
         print('Welcome Lemonade Stand Entrepreneur')
         # Print some instructions
-        owner = Owner.Owner()                       # Create and owner
-        owner.loadOwner()                           # initialize owner information
+        owner = Owner.Owner()  # Create and owner
+        owner.loadOwner()  # initialize owner information
         self.todayWeatherReport.getReport()
-        print('Todays weather report is %s, %s, %s Degrees' % (self.todayWeatherReport.weather,
-                                                               self.todayWeatherReport.precipitation,
-                                                               self.todayWeatherReport.temperature))
-        self.getMoreInventory(owner)                     # Ask Owner to update inventory
+        print('Today\'s weather report is %s, %s, %s Degrees' % (self.todayWeatherReport.weather,
+                                                                 self.todayWeatherReport.precipitation,
+                                                                 self.todayWeatherReport.temperature))
+        self.getMoreInventory(owner)  # Ask Owner to update inventory
+
+        seconds = ((self.dayEnd.hour - self.dayStart.hour) * 60 + self.dayStart.minute + self.dayEnd.minute) * 60
+        while self.dayStart < self.dayEnd and seconds > 0:
+            potentialCustomer = Customer.Customer()  # one customer every loop. Improve with random daily rate code
+            if owner.inventory.enoughInventory() == True
+                if potentialCustomer.isInterested(self.todayWeatherReport):
+                    print('Customer is buying')
+                    cupObject = owner.inventory.takeCup(1)
+                    owner.fillCup(cupObject, owner.inventory.pitcher)
+                    owner.giveFullCup(cupObject)  # deletes cup object from memory space
+                else:
+                    print('Customer is not interested')
+                nowSeconds = datetime.datetime.now().second
+                while nowSeconds == datetime.datetime.now().second:
+                    print('Waiting one second to warp')
+                seconds -= self.warpFactor  # eat seconds faster by warp factor
+            else:
+                print('Sorry: you ran out of supplies')
+                # Add capability to track actual sales, lost sales due to interest, lost sales due to supplies
 
 
-
-
-         #################
-
-        # BUY  items. possibly handle all inside the INVENTORY CLASS.
-            # inventory.Buy(Owner)  buy lemons, ice, cups, sugar, water. Accounts for cash VS total cost to buy
-                    # buying will create instances of the supplies and quantities.
-
-        #################   GAME LOOP ################
-
-        # if Customer
-
-
+        print('         SORRY. its pass %s. Time to go home. ' % (self.dayEnd))
