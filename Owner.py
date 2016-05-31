@@ -1,6 +1,12 @@
 import Inventory
 import Sales
+import Recipe
+import csv
 
+class gameRecords:
+
+    def __init__(self):
+        I=0
 
 class Owner:
 
@@ -23,17 +29,31 @@ class Owner:
 
     def inputOwnerInfo(self):
         name = input('Please enter your name : ')
-        self.name = name
+        self.name = name.lower()
         age = input('Please enter your age: ')
         self.age = age
 
     def findOwnerFile(self, name):
-                    # OPen file
-                    # read records checking for name
-                    # if name found return account balance,
-                    # and load prior inventory
-                    # else return -1 meaning a new Owner
+
+        # open file. Check for existence of file.
+        # Loop until name is found
+                    # if found then load all cash and inventory
+                    # else return -1
         balance = -1
+        fieldNames = ['Name', 'CashQty',
+                     'LemQty', 'LemDate', 'LemPrice',
+                     'IceQty','IceDate', 'IcePrice',
+                     'SugarQty', 'SugarPrice',
+                     'CupsQty', 'CupPrice',
+                     'GameStart','GameEnd']
+        with open('GameRec.csv', 'r',) as csvfile:
+            reader = csv.DictReader(csvfile, fieldNames)
+            for row in reader:
+                if (name == row['Name']):
+                    print ('FOUND')
+                    self.inventory.loadOldInventory(row)
+                    balance = self.inventory.cash
+                    break
         return balance
 
     def printInventory(self):
@@ -61,17 +81,20 @@ class Owner:
             self.inventory.addCash(funds)
         else:
             print('Welcome back %s :' %(self.name))
-            print('Your account Balance is $%s' %(self.accountValue))
+            print('Your account Balance is $%s' %(self.inventory.cash))
             print('You have the following inventory:')
             self.printInventory()
             return
 
     def fillCup(self, aCup, aPitcher):
-        aPitcher.serveCup(1)     # serve one cup.
+        if aPitcher.level <= 0:
+            self.inventory.fillPitcher()
+        aPitcher.serveCup(1)  # serve one cup.
         aCup.full = True
 
     def giveFullCup(self,aCup):
         if aCup.full == True:
+            self.daySales.storeSale('today','Nice Person')
             del aCup                    # destroy memory object.
         else :
             print('        ERROR... giving empty cup')

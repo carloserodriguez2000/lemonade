@@ -8,7 +8,7 @@ class GameDay:
     def __init__(self):
         self.todayWeatherReport = WeatherReport.WeatherReport()
         self.dayStart = datetime.datetime.now()
-        self.dayEnd = self.dayStart.replace(hour=23)  # datetime.time(17, 0, 0)  # 5 pm
+        self.dayEnd = self.dayStart.replace(hour=17)  # datetime.time(17, 0, 0)  # 5 pm
         self.warpFactor = 60  # increment in 60 seconds blocks
 
     def getMoreInventory(self, theOwner):
@@ -43,21 +43,24 @@ class GameDay:
                                                                  self.todayWeatherReport.precipitation,
                                                                  self.todayWeatherReport.temperature))
         self.getMoreInventory(owner)  # Ask Owner to update inventory
-
+        owner.inventory.fillPitcher()
         seconds = ((self.dayEnd.hour - self.dayStart.hour) * 60 + self.dayStart.minute + self.dayEnd.minute) * 60
         while self.dayStart < self.dayEnd and seconds > 0:
             potentialCustomer = Customer.Customer()  # one customer every loop. Improve with random daily rate code
-            if owner.inventory.enoughInventory() == True
+            if owner.inventory.enoughInventory() == True and owner.inventory.pitcher.level>0:
                 if potentialCustomer.isInterested(self.todayWeatherReport):
                     print('Customer is buying')
                     cupObject = owner.inventory.takeCup(1)
                     owner.fillCup(cupObject, owner.inventory.pitcher)
                     owner.giveFullCup(cupObject)  # deletes cup object from memory space
+
                 else:
                     print('Customer is not interested')
                 nowSeconds = datetime.datetime.now().second
+                print('Time Left = ', seconds/60/60, ' Pitcher level = ',owner.inventory.pitcher.level)
                 while nowSeconds == datetime.datetime.now().second:
-                    print('Waiting one second to warp')
+                    tickTock = 1
+
                 seconds -= self.warpFactor  # eat seconds faster by warp factor
             else:
                 print('Sorry: you ran out of supplies')

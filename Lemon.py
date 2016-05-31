@@ -12,6 +12,7 @@ class Lemon:
         self.price = 1.0                        # dollars
 
     def isExpired(self):
+        return False                                # need to fix how dates are stored in the file
         if self.purchaseDate - date.today() > 2:
             # lemon is expired.
             return False

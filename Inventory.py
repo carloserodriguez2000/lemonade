@@ -24,6 +24,42 @@ class Inventory:
         self.maxLemons = 100
         self.maxSugar = 100
 
+    def loadOldInventory(self, row):
+        self.cash = float(row['CashQty'])
+
+        itemQty = int(row['LemQty'])
+        itemPrice = row['LemPrice']
+        for index in range(0, itemQty, 1):
+            oldLemon = Lemon.Lemon()
+            oldLemon.price = itemPrice
+            oldLemon.purchaseDate = row['LemDate']
+            self.lemons.append(oldLemon)
+
+        itemQty = int(row['IceQty'])
+        itemPrice = row['IcePrice']
+        for index in range(0, itemQty, 1):
+            oldIce = IceCube.IceCube(20)
+            oldIce.price = itemPrice
+            oldIce.purchaseDate = row['IceDate']
+            self.iceCubes.append(oldIce)
+
+        itemQty = int(row['SugarQty'])
+        itemPrice = row['SugarPrice']
+        for index in range(0, itemQty, 1):
+            oldSugar = Sugar.Sugar()
+            oldSugar.price = itemPrice
+            self.sugar.append(oldSugar)
+
+        itemQty = int(row['CupsQty'])
+        itemPrice = row['CupPrice']
+        for index in range(0, itemQty, 1):
+            oldCup = Cup.Cup()
+            oldCup.price = itemPrice
+            self.cups.append(oldCup)
+
+        # self.inventory. = row['GameStart']
+        # self.inventory. = row['GameEnd']
+
     def addCash(self, quantity):
         self.cash += quantity
 
@@ -41,6 +77,7 @@ class Inventory:
                         len(self.sugar)    == 0 or \
                         len(self.iceCubes) == 0:
             return False
+        return True
 
     def addLemons(self, quantity, pPrice):  # Buy lemons, Subtract cash from
         if (quantity + len(self.lemons)) > self.maxLemons:
@@ -100,7 +137,7 @@ class Inventory:
         gotSugars = 0  # Flag to indicate we got the "quantity" asked.
         while numSugarsLeft > 0 and gotSugars < quantity:
             gotSugars += 1
-            self.cups.pop()  # remove cup from inventory.
+            self.sugar.pop()  # remove cup from inventory.
             numSugarsLeft = len(self.sugar)
         return gotSugars  # contains "0 >= gotSugars <= quantity"
 
@@ -111,7 +148,7 @@ class Inventory:
             randomLemon = random.randrange(0,
                                            numLemonsLeft)  # also random.choice(lemons), or random.choice(list(range(10)))
             thisLemon = self.lemons[randomLemon]
-            if thisLemon.isExpired == False:
+            if thisLemon.isExpired() == False:
                 gotLemons += 1
             self.lemons.pop(randomLemon)  # remove lemon from inventory. found a good one or removed a bad one.
             numLemonsLeft = len(self.lemons)
@@ -143,7 +180,7 @@ class Inventory:
             numCupsLeft = len(self.cups)
         return cupObject
 
-    def fillPitcher(self, recipe):
+    def fillPitcher(self, ):
         i = 0
         # refill the pitcher when it is empty
         # pitcher to contain Cups? or ounces.
@@ -154,8 +191,10 @@ class Inventory:
         if self.pitcher.level != 0:
             # error handling
             i = 0
-        else:
-            self.takeLemons(recipe.QtyLemons)
-            self.takeSugar(recipe.QtySugar)
-            self.takeWater(recipe.QtyWater)
+        else:   # add logic to fail if there is not enough inventory to fill pitcher.
+            newRecipe = Recipe.Recipe()
+            self.takeLemons(newRecipe.QtyLemons)
+            self.takeSugar(newRecipe.QtySugar)
+            self.takeWater(newRecipe.QtyWater)
             self.pitcher.level = self.pitcher.capacity  # set the pitcher to full capacity
+            del newRecipe

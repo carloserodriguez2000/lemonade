@@ -2,12 +2,13 @@ class Sales:
 
     def __init__(self):
         self.numberOfSales=0
-        self.SalesTable=[['DATE', 'PERSONTYPE', 'PRICE']]  # Row [0] is the title row. records appended
-                                                        #satesTable.append([datetype, string, float])
-                                                        #each row is one cup of lemonade sold
+        self.lemonadePrice = 0.25
+        self.SalesTable=[['DATE', 'PERSONTYPE', 'PRICE']]   # Row [0] is the title row. records appended
+                                                            # satesTable.append([datetype, string, float])
+                                                            # each row is one cup of lemonade sold
 
-    def storeSale(self, sale):
-        self.SalesTable.append(sale)
+    def storeSale(self, saleDate, typeOfPerson):
+        self.SalesTable.append([saleDate, typeOfPerson, self.lemonadePrice])
         self.numberOfSales += 1
 
     def tallySales(self):
