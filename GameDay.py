@@ -68,4 +68,4 @@ class GameDay:
                 owner.printInventory()
                 break
 
-            print('         SORRY. its pass %s. Time to go home. ' % (self.dayEnd))
+        print('         SORRY. its pass %s. Time to go home. ' % (self.dayEnd))
