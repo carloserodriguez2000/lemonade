@@ -65,6 +65,7 @@ class GameDay:
             else:
                 print('Sorry: you ran out of supplies')
                 # Add capability to track actual sales, lost sales due to interest, lost sales due to supplies
+                owner.printInventory()
+                break
 
-
-        print('         SORRY. its pass %s. Time to go home. ' % (self.dayEnd))
+            print('         SORRY. its pass %s. Time to go home. ' % (self.dayEnd))

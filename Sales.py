@@ -1,7 +1,7 @@
 class Sales:
 
     def __init__(self):
-        self.numberOfSales=0
+        self.numberOfSales = 0
         self.lemonadePrice = 0.25
         self.SalesTable=[['DATE', 'PERSONTYPE', 'PRICE']]   # Row [0] is the title row. records appended
                                                             # satesTable.append([datetype, string, float])
@@ -14,6 +14,7 @@ class Sales:
     def tallySales(self):
         currentProfit=0
         for sale in self.SalesTable:
-            currentProfit += sale[2]                 # Element 2  is the sale price of the cup sold
+            currentProfit += sale[2]                # Element 2  is the sale price of the cup sold
+                                                    # Need to improve indexing using dictionary instead of fixed number.
 
 
